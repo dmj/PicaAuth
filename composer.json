@@ -1,0 +1,16 @@
+{
+    "name": "hab/pica-auth",
+    "description": "A collection of authentication modules for Pica based library systems",
+    "license": "GPL-3.0+",
+    "authors": [
+        { "name": "David Maus", "email": "maus@hab.de", "role": "Developer" }
+    ],
+    "autoload": {
+        "psr-0": {
+            "HAB": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "~5.0"
+    }
+}
