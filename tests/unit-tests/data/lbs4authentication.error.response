@@ -1,0 +1,7 @@
+HTTP/1.1 200 OK
+Date: Wed, 06 May 2015 09:43:16 GMT
+Server: Apache/2.2.13 (Unix) mod_jk/1.2.28 mod_ssl/2.2.13 OpenSSL/0.9.8k PHP/5.2.11
+Content-Length: 168
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><AuthenticationResponse><status>NOK</status><error>Wrong password and/or number.</error></AuthenticationResponse>
