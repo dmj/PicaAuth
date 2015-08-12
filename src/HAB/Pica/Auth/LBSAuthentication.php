@@ -25,9 +25,6 @@ namespace HAB\Pica\Auth;
 
 use RuntimeException;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-
 /**
  * Authenticate user against the LBS4 Authentication webservice.
  *
@@ -35,7 +32,7 @@ use GuzzleHttp\Exception\RequestException;
  * @copyright (c) 2015 by Herzog August Bibliothek Wolfenbüttel
  * @license   http://www.gnu.org/licenses/gpl.txt GNU General Public License v3 or higher
  */
-class LBSAuthentication implements AuthenticationInterface
+class LBSAuthentication extends AbstractHttpAuthentication implements AuthenticationInterface
 {
     /**
      * Service URL.
@@ -57,13 +54,6 @@ class LBSAuthentication implements AuthenticationInterface
      * @var integer
      */
     private $lbsUserNumber;
-
-    /**
-     * HTTP client.
-     *
-     * @var Client
-     */
-    private $client;
 
     /**
      * Constructor.
@@ -92,26 +82,9 @@ class LBSAuthentication implements AuthenticationInterface
             'FNO' => $this->catalogNumber,
             'LNG' => 'EN'
         );
-        try {
-            $response = $this->getClient()->get($this->serviceUrl, array('query' => $query));
-        } catch (RequestException $e) {
-            throw new RuntimeException(null, -1, $e);
-        }
-        $attributes = $this->parseResponseBody($response->getBody());
+        $response = $this->sendRequest('GET', sprintf('%s?%s', $this->serviceUrl, http_build_query($query)));
+        $attributes = $this->parseResponseBody($response);
         return $attributes;
-    }
-
-    /**
-     * Return HTTP client.
-     *
-     * @return Client
-     */
-    public function getClient ()
-    {
-        if ($this->client === null) {
-            $this->client = new Client();
-        }
-        return $this->client;
     }
 
     /**

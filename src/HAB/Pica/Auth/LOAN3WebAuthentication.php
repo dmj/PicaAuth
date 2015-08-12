@@ -23,11 +23,6 @@
 
 namespace HAB\Pica\Auth;
 
-use RuntimeException;
-
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-
 /**
  * Authenticate user against a LOAN3 web interface.
  *
@@ -35,7 +30,7 @@ use GuzzleHttp\Exception\RequestException;
  * @copyright (c) 2015 by Herzog August Bibliothek Wolfenbüttel
  * @license   http://www.gnu.org/licenses/gpl.txt GNU General Public License v3 or higher
  */
-class LOAN3WebAuthentication implements AuthenticationInterface
+class LOAN3WebAuthentication extends AbstractHttpAuthentication implements AuthenticationInterface
 {
     /**
      * Service URL.
@@ -43,13 +38,6 @@ class LOAN3WebAuthentication implements AuthenticationInterface
      * @var string
      */
     private $serviceUrl;
-
-    /**
-     * HTTP client.
-     *
-     * @var Client
-     */
-    private $client;
 
     /**
      * Constructor.
@@ -72,26 +60,15 @@ class LOAN3WebAuthentication implements AuthenticationInterface
             'BOR_PW' => $password,
             'ACT' => 'UI_DATA',
         );
-        try {
-            $response = $this->getClient()->post($this->serviceUrl, array('body' => $query));
-        } catch (RequestException $e) {
-            throw new RuntimeException(null, -1, $e);
-        }
-        $attributes = $this->parseResponseBody($response->getBody());
+        $response = $this->sendRequest(
+            'POST',
+            $this->serviceUrl,
+            array('Content-Type: application/x-www-form-urlencoded'),
+            http_build_query($query)
+        );
+        $attributes = $this->parseResponseBody($response);
         return $attributes;
 
-    }
-    /**
-     * Return HTTP client.
-     *
-     * @return Client
-     */
-    public function getClient ()
-    {
-        if ($this->client === null) {
-            $this->client = new Client();
-        }
-        return $this->client;
     }
 
     /**

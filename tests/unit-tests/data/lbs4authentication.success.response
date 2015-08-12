@@ -1,7 +1,1 @@
-HTTP/1.1 200 OK
-Date: Wed, 06 May 2015 09:42:33 GMT
-Server: Apache/2.2.13 (Unix) mod_jk/1.2.28 mod_ssl/2.2.13 OpenSSL/0.9.8k PHP/5.2.11
-Content-Length: 232
-Content-Type: application/xml
-
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?><AuthenticationResponse><status>OK</status><sessionID>c3ac4981-eb02-46f5-b092-d7261d08386f</sessionID><userKey>username</userKey><userGroup>20</userGroup></AuthenticationResponse>

@@ -23,8 +23,6 @@
 
 namespace HAB\Pica\Auth;
 
-use GuzzleHttp\Subscriber\Mock;
-
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -36,31 +34,25 @@ use PHPUnit_Framework_TestCase as TestCase;
  */
 class LBSAuthenticationTest extends TestCase
 {
-    /**
-     * @expectedException RuntimeException
-     */
-    public function testRuntimeExceptionOnRemoteError ()
-    {
-        $service = new LBSAuthentication('invalid://example.org/', 0, 0);
-        $response = new Mock(array('HTTP/1.1 500 Internal Server Error'));
-        $service->getClient()->getEmitter()->attach($response);
-        $service->authenticate('username', 'password');
-    }
-
     public function testAuthenticationFailure ()
     {
-        $service = new LBSAuthentication('invalid://example.org/', 0, 0);
-        $response = new Mock(array(file_get_contents(APP_TESTDIR . '/unit-tests/data/lbs4authentication.error.response')));
-        $service->getClient()->getEmitter()->attach($response);
+        $service = $this->getMock('HAB\Pica\Auth\LBSAuthentication', array('sendRequest'), array('', 0, 0));
+        $response = file_get_contents(APP_TESTDIR . '/unit-tests/data/lbs4authentication.error.response');
+        $service->expects($this->once())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));
+        
         $attributes = $service->authenticate('username', 'password');
         $this->assertFalse($attributes);
     }
 
     public function testAuthenticationSuccess ()
     {
-        $service = new LBSAuthentication('invalid://example.org/', 0, 0);
-        $response = new Mock(array(file_get_contents(APP_TESTDIR . '/unit-tests/data/lbs4authentication.success.response')));
-        $service->getClient()->getEmitter()->attach($response);
+        $service = $this->getMock('HAB\Pica\Auth\LBSAuthentication', array('sendRequest'), array('', 0, 0));
+        $response = file_get_contents(APP_TESTDIR . '/unit-tests/data/lbs4authentication.success.response');
+        $service->expects($this->once())
+            ->method('sendRequest')
+            ->will($this->returnValue($response));        
         $attributes = $service->authenticate('username', 'password');
         $this->assertInternalType('array', $attributes);
         $this->assertNotEmpty($attributes);
