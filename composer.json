@@ -1,5 +1,5 @@
 {
-    "name": "hab/pica-auth",
+    "name": "hab/picaauth",
     "description": "A collection of authentication modules for Pica based library systems",
     "license": "GPL-3.0+",
     "authors": [
