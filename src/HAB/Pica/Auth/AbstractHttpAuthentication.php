@@ -55,7 +55,7 @@ abstract class AbstractHttpAuthentication
         $ctx = stream_context_create($ctxOptions);
         $response = file_get_contents($url, false, $ctx);
         if ($response === false) {
-            throw new RuntimeException("Error sending HTTP '{$method}' request to '{$url}'");
+            throw new RuntimeException("Error sending HTTP request");
         }
 
         $statuscode = null;
