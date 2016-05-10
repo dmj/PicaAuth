@@ -97,7 +97,7 @@ class LBSAuthentication extends AbstractHttpAuthentication implements Authentica
      */
     private function parseResponseBody ($body)
     {
-        $response = @simplexml_load_string($body);
+        $response = simplexml_load_string($body);
         if ($response === false || $response->getName() !== 'AuthenticationResponse' || (string)$response->status !== 'OK') {
             return false;
         }
